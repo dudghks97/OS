@@ -1,0 +1,10 @@
+운체 ppt outline
+1. 문제 설명 및 예상 수행 결과
+2. 수정 후 수행 결과
+3. 프로그램 흐름도
+4. POSIX Thread란?
+5. 각 함수별 설명
+5-1 run_enzyme - 수정안 1
+5-2 make_enzyme_threads - 수정안 2
+5-3 join_on_enzymes - 추가 수정
+5-4 smp2_main
