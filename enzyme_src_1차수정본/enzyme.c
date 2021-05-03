@@ -52,25 +52,26 @@ int make_enzyme_threads(pthread_t * enzymes, char *string, void *(*fp)(void *)) 
 int join_on_enzymes(pthread_t *threads, int n) {
 	int i;
 	int totalswapcount = 0;
+	thread_info_t* info;
 
 	for(i=0;i<n;i++) {
 	    void *status;
 	    int rv = pthread_join(threads[i],&status);
 
-        if(rv) {
+        if(rv != 0) {
 	    fprintf(stderr,"Can't join thread %d:%s.\n",i,strerror(rv));
 	    continue;
 	}
 
-	if (status == PTHREAD_CANCELED) {
+	if ((void *)status == PTHREAD_CANCELED) {
 	    continue;
 	} else if (status == NULL) {
 	    printf("Thread %d did not return anything\n",i);
 	    } else {
 	      printf("Thread %d exited normally: ",i);
-		  int threadswapcount = ((thread_info_t*)status)->swapcount;
-		  printf("%d swaps.\n", threadswapcount);
-	      totalswapcount += threadswapcount;
+		  info = (thread_info_t*)status
+		  printf("%d swaps.\n", info->swapcount);
+		  totalswapcount += info->swapcount;
 	    }
 	}	
 	return totalswapcount;
@@ -114,10 +115,8 @@ int smp2_main(int argc, char **argv) {
 	printf("Done creating %d threads.\n",n);
 	
 	pthread_t sleeperid;
-	if (string[0] == 'C') {
-		pthread_create(&sleeperid, NULL, sleeper_func, (void*)5);
-		sleep(6);
-	}
+	pthread_create(&sleeperid, NULL, sleeper_func, (void*)5);
+
 	wait_till_done(string,n);
 	please_quit = 1;
 	printf("Joining threads...\n");

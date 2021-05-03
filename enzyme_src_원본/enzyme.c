@@ -61,8 +61,8 @@ int make_enzyme_threads(pthread_t * enzymes, char *string, void *(*fp)(void *)) 
 int join_on_enzymes(pthread_t *threads, int n) {
 	int i;
 	int totalswapcount = 0;
-	int whatgoeshere=0; // just to make the code compile 
-	                    // you will need to edit the code below
+	int whatgoeshere=0;
+
 	for(i=0;i<n;i++) {
 	    void *status;
 	    int rv = pthread_join(threads[i],&status);
@@ -77,11 +77,10 @@ int join_on_enzymes(pthread_t *threads, int n) {
 	} else if (status == NULL) {
 	    printf("Thread %d did not return anything\n",i);
 	    } else {
-	      printf("Thread %d exited normally: ",i);// Don't change this line
+	      printf("Thread %d exited normally: ",i);
 	      int threadswapcount = whatgoeshere; 
-	      // Hint - you will need to cast something.
-	      printf("%d swaps.\n",threadswapcount); // Don't change this line
-	      totalswapcount += threadswapcount;// Don't change this line
+	      printf("%d swaps.\n",threadswapcount);
+	      totalswapcount += threadswapcount;
 	    }
 	}	
 	return totalswapcount;
